@@ -2,13 +2,12 @@ import React, {useState} from 'react'
 import {Container, Row, Col, Button} from 'reactstrap'
 import Header from '../header'
 import RandomChar from '../random-char'
-import ItemList from '../item-list'
-import CharDetails from '../char-details'
+import CharacterPage from '../character-page/character-page'
 import './app.scss'
 
 const App = () => {
-	const [showChar, setShowChar] = useState(false)
-	const showCharRender = !showChar ? <RandomChar/> : null
+	const [showChar, setShowChar] = useState(true)
+	const showCharRender = showChar ? <RandomChar/> : null
 	return (
 		<>
 			<Container>
@@ -16,21 +15,14 @@ const App = () => {
 			</Container>
 			<Container>
 				<Row>
-					<Col>
-						<Button onClick={()=>setShowChar(!showChar)} color="primary">Toggle Random Character</Button>
+					<Col sm={12}>
+						<Button className='mb-2' onClick={()=>setShowChar(!showChar)} color="primary">Toggle</Button>
 					</Col>
 					<Col lg={{size: 5, offset: 0}}>
 						{showCharRender}
 					</Col>
 				</Row>
-				<Row>
-					<Col md='6'>
-						<ItemList/>
-					</Col>
-					<Col md='6'>
-						<CharDetails/>
-					</Col>
-				</Row>
+				<CharacterPage/>
 			</Container>
 		</>)
 }

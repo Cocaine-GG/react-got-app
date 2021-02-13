@@ -1,3 +1,6 @@
-import CharDetails from './char-details'
+import ItemDetails, {Field} from './item-details'
 
-export default CharDetails
+export default ItemDetails
+export {
+	Field
+}
