@@ -3,6 +3,7 @@ import {ListGroup, ListGroupItem} from 'reactstrap'
 import Loading from '../loading'
 import ErrorMessage from '../error-message'
 import GotService from '../../services/got-service'
+import PropTypes from 'prop-types'
 import './random-char.scss'
 
 export default class RandomChar extends Component {
@@ -13,10 +14,16 @@ export default class RandomChar extends Component {
 		loading: true,
 		error : false
 	}
+	static defaultProps = {
+		interval: 15000
+	}
+	static propTypes = {
+		interval: PropTypes.number
+	}
 
 	componentDidMount() {
 		this.updateChar()
-		this.timerId =  setInterval(this.updateChar, 10000)
+		this.timerId =  setInterval(this.updateChar, this.props.interval)
 	}
 
 	componentWillUnmount() {

@@ -1,32 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import ItemList from '../item-list'
-import ItemDetails, {Field} from '../item-details'
 import GotService from '../../services/got-service'
-import RowBlock from '../row-block'
+import {withRouter} from 'react-router-dom'
 
-const BooksPage = () => {
-	const [selectedItem, setSelectedItem] = useState(null)
+const BooksPage = ({history}) => {
 	const gotService = new GotService()
-	const itemList = (
+
+	return (
 		<ItemList
-			onItemSelected={ (id) => setSelectedItem(id) }
+			onItemSelected={ (itemId) => history.push(itemId) }
 			getData={gotService.getAllBooks}
 			renderItem={({name})=>name}/>
 	)
-	const itemDetails = (
-		<ItemDetails
-			spanLabel='book'
-			itemId={selectedItem}
-			getData={gotService.getBook}>
-			<Field field='numberOfPages' label='Number of pages' />
-			<Field field='publisher' label='Publisher' />
-			<Field field='released' label='Released' />
-		</ItemDetails>
-	)
-
-	return (
-		<RowBlock left={itemList} right={itemDetails}/>
-	)
 }
 
-export default BooksPage
+export default withRouter(BooksPage)

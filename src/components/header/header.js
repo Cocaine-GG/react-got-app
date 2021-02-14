@@ -1,17 +1,18 @@
 import React from 'react'
-import {Nav, NavLink, NavItem} from 'reactstrap'
+import {Nav, NavItem} from 'reactstrap'
+import {Link} from 'react-router-dom'
 import './header.scss'
 
 const Header = () => {
 	return (
 		<div className='header'>
-		<h3><NavLink href="/">Game of Thrones DB</NavLink></h3>
+		<h3><Link to="/">Game of Thrones DB</Link></h3>
 		<Nav>
 			<NavItem>
-				<NavLink href="/">Characters</NavLink>
+				<Link to="/characters/">Characters</Link>
 			</NavItem>
-			<NavItem><NavLink href="/houses">Houses</NavLink></NavItem>
-			<NavItem><NavLink href="/books">Books</NavLink></NavItem>
+			<NavItem><Link to="/houses/">Houses</Link></NavItem>
+			<NavItem><Link to="/books/">Books</Link></NavItem>
 		</Nav>
 	</div>)
 }

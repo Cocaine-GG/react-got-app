@@ -1,12 +1,18 @@
 import React, {Component} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import Loading from '../loading'
+import PropTypes from 'prop-types'
 import './item-list.scss'
 
 export default class ItemList extends Component {
-
 	state = {
 		itemList: null
+	}
+
+	static propsTypes = {
+		onItemSelected : PropTypes.func,
+		getData: PropTypes.arrayOf(PropTypes.object),
+		renderItem: PropTypes.func
 	}
 
 	componentDidMount() {
