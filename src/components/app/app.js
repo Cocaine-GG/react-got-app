@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Container, Row, Col, Button} from 'reactstrap'
 import Header from '../header'
 import RandomChar from '../random-char'
-import CharacterPage from '../character-page/character-page'
+import {CharacterPage, BooksPage, HousesPage} from '../pages'
 import './app.scss'
 
 const App = () => {
@@ -22,7 +22,9 @@ const App = () => {
 						{showCharRender}
 					</Col>
 				</Row>
-				<CharacterPage/>
+				{/*<CharacterPage/>*/}
+				<HousesPage/>
+				{/*<BooksPage/>*/}
 			</Container>
 		</>)
 }

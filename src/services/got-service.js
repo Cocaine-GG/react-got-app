@@ -7,8 +7,7 @@ export default class GotService {
 		const res = await fetch(`${this._apiBase}${url}`)
 
 		if (!res.ok) {
-			throw new Error(`Could not fetch ${url}` +
-				`, received ${res.status}`)
+			throw new Error(`Could not fetch ${url}` + `, received ${res.status}`)
 		}
 		return await res.json()
 	}
@@ -25,7 +24,7 @@ export default class GotService {
 
 	getAllCharacters = async () => {
 		const res = await this.getResource(`/characters?page=5&pageSize=10`)
-		return res.map(this._transformCharacter);
+		return res.map(this._transformCharacter)
 	}
 
 	getCharacter = async (id) => {
@@ -40,20 +39,14 @@ export default class GotService {
 
 	getHouse = async (id) => {
 		const house = await this.getResource(`/houses/${id}/`)
-		return this._transformBook(house)
+		return this._transformHouse(house)
 	}
 
-	isSet = (data) => {
-		if (data) {
-			return data
-		} else {
-			return 'no data :('
-		}
-	}
+	isSet = (data) => data ? data : 'no data :('
 
 	_extractId = (item) => {
-		const idRegExp = /\/([0-9]*)$/;
-		return item.url.match(idRegExp)[1];
+		const idRegExp = /\/([0-9]*)$/
+		return item.url.match(idRegExp)[1]
 	}
 
 	_transformCharacter = (char) => {

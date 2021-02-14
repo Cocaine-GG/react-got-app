@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
-import GotService from '../../services/got-service'
 import './item-details.scss'
 
-const Field = ({item,field, label}) => {
+const Field = ({ item, field, label }) => {
 	return (
 		<ListGroupItem className="d-flex justify-content-between">
 			<span className="term">{label}</span>
@@ -11,13 +10,10 @@ const Field = ({item,field, label}) => {
 		</ListGroupItem>
 	)
 }
-
 export {
 	Field
 }
 export default class ItemDetails extends Component {
-	gotService = new GotService()
-
 	state = {
 		item : null
 	}
@@ -33,22 +29,23 @@ export default class ItemDetails extends Component {
 	}
 
 	updateItem = () => {
-		const {itemId} = this.props
+		const {itemId,getData} = this.props
 
 		if (!itemId){
 			return
 		}
 
-		this.gotService.getCharacter(itemId)
+		getData(itemId)
 			.then((item)=>{
 				this.setState({item})
 			})
 	}
 
 	render() {
+		const {spanLabel} = this.props
 
 		if (!this.state.item){
-			return <span className='select-error'> Please select a character</span>
+			return <span className='select-error'> Please select a {spanLabel}</span>
 		}
 
 		const {item, item: {name}} = this.state
