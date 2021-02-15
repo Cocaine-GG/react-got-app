@@ -1,69 +1,51 @@
-import React, {Component} from 'react'
+import React, {useState, useEffect} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import Loading from '../loading'
 import ErrorMessage from '../error-message'
 import GotService from '../../services/got-service'
-import PropTypes from 'prop-types'
 import './random-char.scss'
 
-export default class RandomChar extends Component {
+const RandomChar = ({interval}) => {
+	const [char, setChar] = useState({})
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(false)
+	const gotService = new GotService()
 
-	gotService = new GotService()
-	state = {
-		char : {},
-		loading: true,
-		error : false
-	}
-	static defaultProps = {
-		interval: 15000
-	}
-	static propTypes = {
-		interval: PropTypes.number
-	}
+	useEffect(() => {
+		updateChar()
+		const timerId = setInterval(updateChar, interval)
+		return () => clearInterval(timerId)
+	}, [])
 
-	componentDidMount() {
-		this.updateChar()
-		this.timerId =  setInterval(this.updateChar, this.props.interval)
+	const onCharLoaded = (char) => {
+		setChar(char)
+		setLoading(false)
 	}
 
-	componentWillUnmount() {
-		clearInterval(this.timerId)
+	const onError = (err) => {
+		setError(true)
+		setLoading(false)
+		return err
 	}
 
-	onCharLoaded = (char) => {
-		this.setState({char, loading: false})
+	const updateChar = () => {
+		const id = Math.floor(Math.random() * 140 + 25)
+		gotService.getCharacter(id)
+							.then(onCharLoaded)
+							.catch(onError)
 	}
 
-	onError = (err) => {
-		this.setState({
-			error : true,
-			loading : false
-		})
-	}
-
-	updateChar = () => {
-		const id = Math.floor(Math.random()*140+25)
-		this.gotService.getCharacter(id)
-				.then(this.onCharLoaded)
-				.catch(this.onError)
-	}
-
-	render() {
-		const {char, loading, error } = this.state
-		const content = loading
+	const content = loading
 										? <Loading/>
-										: !error ? <View char={char} />
+										: !error ? <View char={char}/>
 										: <ErrorMessage/>
-			return (
-			<div className="random-block rounded">
-				{content}
-			</div>
-		)
-	}
+	return (
+		<div className="random-block rounded">
+			{content}
+		</div>)
 }
 
-const View = ({char}) => {
-	let {name,gender,born,died,culture} = char
+const View = ({ char: {name, gender, born, died, culture} }) => {
 	return (
 		<>
 			<h4>Random Character: {name}</h4>
@@ -85,6 +67,7 @@ const View = ({char}) => {
 					<span>{culture}</span>
 				</ListGroupItem>
 			</ListGroup>
-		</>
-	)
+		</>)
 }
+
+export default RandomChar

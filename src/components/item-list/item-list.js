@@ -1,46 +1,35 @@
-import React, {Component} from 'react'
+import React, {useState, useEffect} from 'react'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import Loading from '../loading'
-import PropTypes from 'prop-types'
 import './item-list.scss'
 
-export default class ItemList extends Component {
-	state = {
-		itemList: null
-	}
+const ItemList = ({getData, onItemSelected, renderItem}) => {
+	const [itemList, setItemList] = useState([])
 
-	static propsTypes = {
-		onItemSelected : PropTypes.func,
-		getData: PropTypes.arrayOf(PropTypes.object),
-		renderItem: PropTypes.func
-	}
-
-	componentDidMount() {
-		const {getData} = this.props
+	useEffect(() => {
 		getData()
-			.then(itemList => this.setState({itemList}))
-	}
+			.then(itemList => setItemList(itemList))
+	}, [])
 
-	renderItem = (arr) => {
-		return arr.map((item)=>{
+	const renderItems = (arr) => {
+		return arr.map((item) => {
 			const {id} = item
-			const label = this.props.renderItem(item)
+			const label = renderItem(item)
 			return (
 				<ListGroupItem
-					key={id}
-					onClick={()=>this.props.onItemSelected(id)}>
-					{label}
-				</ListGroupItem>
-			)
+				key={id}
+				onClick={() => onItemSelected(id)}>
+				{label}
+			</ListGroupItem>)
 		})
 	}
 
-	render() {
-		const {itemList} = this.state
-		if (!itemList){
-			return <Loading/>
-		}
-		const items = this.renderItem(itemList)
-		return <ListGroup className="item-list">{items}</ListGroup>
+	if (!itemList) {
+		return <Loading/>
 	}
+
+	const items = renderItems(itemList)
+	return <ListGroup className="item-list">{items}</ListGroup>
 }
+
+export default ItemList
